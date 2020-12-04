@@ -13,7 +13,8 @@ public:
     Status getStatus() override;
 
 public:
-    Human(std::string name, Status status);
+    Human(const std::string &name, Status status);
+
     std::string makeTurn(VirusWarModel &model) override;
 };
 

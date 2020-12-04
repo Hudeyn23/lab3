@@ -12,12 +12,12 @@ std::string Bot::makeTurn(VirusWarModel &model) {
                             for (char f = '1'; f <= '8'; f++) {
                                 std::string stringTurn = "";
                                 char turn[] = {a, b, '-', c, d, '-', e, f};
-                                for (int i = 0; i < 8; i++) {
-                                    stringTurn = stringTurn + turn[i];
+                                for (char i : turn) {
+                                    stringTurn += i;
                                 }
 
                                 auto vector = VirusWarUtil::split(stringTurn, '-');
-                                if (model.isTurnCorrect(vector, status)) {
+                                if (model.isTurnCorrect(vector)) {
                                     return stringTurn;
                                 }
                             }
@@ -26,11 +26,11 @@ std::string Bot::makeTurn(VirusWarModel &model) {
                 }
         }
     }
-    return "wo";
+    return "";
 }
 
 
-Bot::Bot(std::string name, Status status) {
+Bot::Bot(const std::string &name, Status status) {
     this->name = name;
     this->status = status;
 }

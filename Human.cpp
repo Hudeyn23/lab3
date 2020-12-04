@@ -1,7 +1,3 @@
-//
-// Created by Nikita on 29.11.2020.
-//
-
 #include "Human.h"
 #include <iostream>
 
@@ -12,7 +8,7 @@ std::string Human::makeTurn(VirusWarModel &model) {
     return turn;
 }
 
-Human::Human(std::string name, Status status) {
+Human::Human(const std::string &name, Status status) {
     this->name = name;
     this->status = status;
 }

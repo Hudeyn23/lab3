@@ -6,13 +6,16 @@
 #include "VirusWarUtil.h"
 #include <string>
 #include "Player.h"
+
 class VirusWarController {
 public:
-    VirusWarController(VirusWarModel &model);
-    void handleTurn(std::string &str, Status status,Player *player);
+    explicit VirusWarController(VirusWarModel &model);
+
+    void handleTurn(std::string &str);
 
 private:
     VirusWarModel &model;
+
     bool checkTurnFormat(std::vector<std::string>);
 };
 

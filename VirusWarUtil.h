@@ -42,6 +42,16 @@ public:
         return symbol - 96;
     }
 
+    static Status getOpositeStatus(Status status) {
+        if (status == CROSS) {
+            return ZERO;
+        }
+        if (status == ZERO) {
+            return CROSS;
+        }
+        throw std::invalid_argument("haha");
+    }
+
     static std::vector<std::string> split(const std::string &s, char delimiter) {
         std::vector<std::string> tokens;
         std::string token;

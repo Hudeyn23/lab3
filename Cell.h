@@ -15,7 +15,7 @@ public:
         cellStatus = EMPTY;
     }
 
-    void ChangeCellStatus(Status newStatus)  {
+    void ChangeCellStatus(Status newStatus) {
         cellStatus = newStatus;
     }
 

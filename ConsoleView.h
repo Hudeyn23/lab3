@@ -4,15 +4,14 @@
 
 #include "VirusWarView.h"
 
-class ConsoleView: public::VirusWarView {
+class ConsoleView : public ::VirusWarView {
 public:
     void syncWithModel(Board &board) override;
 
-    void printWinMessage() override;
+    void printWinMessage(Status status) override;
 
     void wrongTurnMessage() override;
 
-    void printStartMessage() override;
 };
 
 

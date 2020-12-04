@@ -10,11 +10,9 @@ public:
 
     virtual void syncWithModel(Board &board) = 0;
 
-    virtual void printWinMessage() = 0;
+    virtual void printWinMessage(Status status) = 0;
 
     virtual void wrongTurnMessage() = 0;
-
-    virtual void printStartMessage() = 0;
 
 };
 

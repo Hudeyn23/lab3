@@ -4,11 +4,12 @@
 #define LAB3_BOT_H
 
 
-class Bot : public :: Player{
+class Bot : public ::Player {
 public:
     std::string name;
     Status status;
-    Bot(std::string name,Status status);
+
+    Bot(const std::string &name, Status status);
 
     Status getStatus() override;
 

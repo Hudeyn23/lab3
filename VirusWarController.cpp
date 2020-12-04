@@ -3,16 +3,17 @@
 VirusWarController::VirusWarController(VirusWarModel &model) : model(model) {}
 
 
-void VirusWarController::handleTurn(std::string &str, Status status, Player *player) {
+void VirusWarController::handleTurn(std::string &str) {
     auto turns = VirusWarUtil::split(str, '-');
     if (checkTurnFormat(turns)) {
         try {
-            model.makeTurns(turns, status);
+            model.makeTurns(turns);
         }
         catch (VirusWarModelException &a) {
             throw a;
         }
     } else {
+        model.notifyAboutWrongTurn();
         throw std::invalid_argument("Wrong turn format");
     }
 }
@@ -23,7 +24,6 @@ bool VirusWarController::checkTurnFormat(std::vector<std::string> turns) {
     }
     for (int i = 0; i < 3; i++) {
         std::string a = turns[i];
-        int l = turns[i].size();
         if (turns[i].size() != 2) {
             return false;
         }

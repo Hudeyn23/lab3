@@ -20,14 +20,14 @@ void ConsoleView::syncWithModel(Board &board) {
     std::cout << std::endl;
 }
 
-void ConsoleView::printWinMessage() {
-    std::cout << "Wrong turn.Try again";
+void ConsoleView::printWinMessage(Status status) {
+    if (status == CROSS) {
+        std::cout << "ZERO win";
+    } else {
+        std::cout << "CROSS win";
+    }
 }
 
 void ConsoleView::wrongTurnMessage() {
-    std::cout << "Wrong turn.Try again";
-}
-
-void ConsoleView::printStartMessage() {
-    std::cout << "Hello it`s Virus War game.There are a Board 8x8" << std::endl;
+    std::cout << "Wrong turn.Try again" << std::endl;
 }

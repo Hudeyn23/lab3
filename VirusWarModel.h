@@ -11,18 +11,18 @@ class VirusWarModel {
 private:
     Board virusWarBoard;
     std::vector<VirusWarView *> viewers;
+    Status currentTurn = CROSS;
     bool zeroFirstTurn = true;
     bool crossFirstTurn = true;
 public:
-    void startGame();
 
     bool isWin();
 
     bool isGameOver();
 
-    void interactWithCell(int row, int column, Status status,Board& board);
+    void interactWithCell(int row, int column, Board &board);
 
-    bool isTurnCorrect(std::vector<std::string> turn, Status status);
+    bool isTurnCorrect(const std::vector<std::string> &turn);
 
     Status getCellStatus(int row, int column) {
         return virusWarBoard.getCell(row, column).getCurrentStatus();
@@ -30,9 +30,13 @@ public:
 
     void updateViewers();
 
+    void notifyAboutWrongTurn();
+
+    void notifyAboutWin();
+
     void addViewer(VirusWarView *viewer);
 
-    void makeTurns(std::vector<std::string> turn, Status status);
+    void makeTurns(const std::vector<std::string> &turn);
 };
 
 

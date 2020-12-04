@@ -7,7 +7,7 @@ bool VirusWarModel::isWin() {
     return false;
 }
 
-bool VirusWarModel::isTurnCorrect(std::vector<std::string> turn, Status status) {
+bool VirusWarModel::isTurnCorrect(const std::vector<std::string> &turn) {
     Board boardForCheckTurn = virusWarBoard;
     bool zeroFirstTurnForCheck = zeroFirstTurn;
     bool crossFirstTurnForCheck = crossFirstTurn;
@@ -17,24 +17,32 @@ bool VirusWarModel::isTurnCorrect(std::vector<std::string> turn, Status status) 
         if (row >= 1 && row <= 8 && column >= 1 && column <= 8) {
             Cell currentCell = boardForCheckTurn.getCell(row - 1, column - 1);
             if (currentCell.getCurrentStatus() == EMPTY) {
-                if (zeroFirstTurn && status == ZERO) {
-                    zeroFirstTurnForCheck = false;
-                    interactWithCell(row, column, status, boardForCheckTurn);
-                    continue;
+                if (zeroFirstTurnForCheck && currentTurn == ZERO) {
+                    if (row == 8 && column == 8) {
+                        zeroFirstTurnForCheck = false;
+                        interactWithCell(row, column, boardForCheckTurn);
+                        continue;
+                    } else {
+                        return false;
+                    }
                 }
-                if (crossFirstTurn && status == CROSS) {
-                    crossFirstTurnForCheck = false;
-                    interactWithCell(row, column, status, boardForCheckTurn);
-                    continue;
+                if (crossFirstTurnForCheck && currentTurn == CROSS) {
+                    if (row == 1 && column == 1) {
+                        crossFirstTurnForCheck = false;
+                        interactWithCell(row, column, boardForCheckTurn);
+                        continue;
+                    } else {
+                        return false;
+                    }
                 }
             }
             if (currentCell.getCurrentStatus() == DEAD_CROSS || currentCell.getCurrentStatus() == DEAD_ZERO ||
-                currentCell.getCurrentStatus() == status) {
+                currentCell.getCurrentStatus() == currentTurn) {
                 return false;
             }
             bool isChecked[8][8] = {false};
-            if (boardForCheckTurn.isTherePathToSimilarCell(row - 1, column - 1, status, isChecked)) {
-                interactWithCell(row, column, status, boardForCheckTurn);
+            if (boardForCheckTurn.isTherePathToSimilarCell(row - 1, column - 1, currentTurn, isChecked)) {
+                interactWithCell(row, column, boardForCheckTurn);
             } else {
                 return false;
             }
@@ -55,38 +63,81 @@ void VirusWarModel::updateViewers() {
     }
 }
 
-void VirusWarModel::interactWithCell(int row, int column, Status status, Board &board) {
-    Cell &currentCell = board.getCell(row - 1, column - 1);
-    if (currentCell.getCurrentStatus() == EMPTY) {
-        currentCell.ChangeCellStatus(status);
-    } else {
-        currentCell.ChangeCellStatus(VirusWarUtil::getDeadStatusOfEnemy(status));
+
+void VirusWarModel::notifyAboutWrongTurn() {
+    auto it = viewers.begin();
+    while (it != viewers.end()) {
+        (*it)->wrongTurnMessage();
+        it++;
     }
 }
 
-void VirusWarModel::makeTurns(std::vector<std::string> turn, Status status) {
+void VirusWarModel::notifyAboutWin() {
+    auto it = viewers.begin();
+    while (it != viewers.end()) {
+        (*it)->printWinMessage(currentTurn);
+        it++;
+    }
+}
+
+void VirusWarModel::interactWithCell(int row, int column, Board &board) {
+    if (board.getCell(row - 1, column - 1).getCurrentStatus() == EMPTY) {
+        board.ChangeCellStatus(currentTurn, row - 1, column - 1);
+    } else {
+        board.ChangeCellStatus(VirusWarUtil::getDeadStatusOfEnemy(currentTurn), row - 1, column - 1);
+
+    }
+}
+
+void VirusWarModel::makeTurns(const std::vector<std::string> &turn) {
     Board boardBeforeTurns = virusWarBoard;
-    bool oldZeroFirstTurn = zeroFirstTurn;
-    bool oldCrossFirstTurn = crossFirstTurn;
-    if (isTurnCorrect(turn, status)) {
-        if (crossFirstTurn && status == CROSS) {
+    if (isTurnCorrect(turn)) {
+        if (crossFirstTurn && currentTurn == CROSS) {
             crossFirstTurn = false;
         }
-        if (zeroFirstTurn && status == ZERO) {
+        if (zeroFirstTurn && currentTurn == ZERO) {
             zeroFirstTurn = false;
         }
         for (int i = 0; i < 3; i++) {
             int column = VirusWarUtil::getColumnByChar(turn[i].at(0));
             int row = turn[i].at(1) - '0';
-            this->interactWithCell(row, column, status, virusWarBoard);
+            this->interactWithCell(row, column, virusWarBoard);
         }
     } else {
+        notifyAboutWrongTurn();
         throw VirusWarModelException("invalid turn");
+    }
+    if (currentTurn == CROSS) {
+        currentTurn = ZERO;
+    } else {
+        currentTurn = CROSS;
     }
     updateViewers();
 }
 
+
 bool VirusWarModel::isGameOver() {
-    return false;
+    if (zeroFirstTurn || crossFirstTurn) {
+        return false;
+    }
+    Board boardForCheckTurn = virusWarBoard;
+    int possibleTurns = 0;
+    for (int i = 1; i < 8; i++) {
+        for (int j = 1; j < 8; j++) {
+            Cell currentCell = boardForCheckTurn.getCell(i, j);
+            if (currentCell.getCurrentStatus() == EMPTY ||
+                currentCell.getCurrentStatus() == VirusWarUtil::getOpositeStatus(currentTurn)) {
+                bool isChecked[8][8] = {false};
+                if (boardForCheckTurn.isTherePathToSimilarCell(i, j, currentTurn, isChecked)) {
+                    possibleTurns++;
+                }
+                if (possibleTurns >= 3) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 }
+
 
