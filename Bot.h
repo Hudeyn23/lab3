@@ -6,14 +6,13 @@
 
 class Bot : public ::Player {
 public:
-    std::string name;
     Status status;
 
-    Bot(const std::string &name, Status status);
-
-    Status getStatus() override;
+    Bot(Status status);
 
     std::string makeTurn(VirusWarModel &model) override;
+
+    virtual ~Bot();
 };
 
 

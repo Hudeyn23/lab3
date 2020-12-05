@@ -24,24 +24,25 @@ void VirusWarGame::start() {
         std::string name;
         std::cout << "Print first player name" << std::endl;
         std::cin >> name;
-        firstPlayer = new Human(name, ZERO);
-        secondPlayer = new Bot("Bot", CROSS);
+        firstPlayer = new Human(name, CROSS);
+        secondPlayer = new Bot(ZERO);
     }
     if (numberOfPlayers == 2) {
         std::string name;
         std::cout << "Print first player name" << std::endl;
         std::cin >> name;
-        firstPlayer = new Human(name, ZERO);
+        firstPlayer = new Human(name, CROSS);
         std::cout << "Print second player name" << std::endl;
         std::cin >> name;
-        secondPlayer = new Human(name, CROSS);
+        secondPlayer = new Human(name, ZERO);
     }
+    controller.addPlayer(firstPlayer);
+    controller.addPlayer(secondPlayer);
     while (!model.isGameOver()) {
         bool turnComplete = false;
         while (!turnComplete) {
             try {
-                std::string turns = firstPlayer->makeTurn(model);
-                controller.handleTurn(turns);
+                controller.handleTurn();
             }
             catch (const VirusWarModelException &a) {
                 continue;
@@ -50,22 +51,6 @@ void VirusWarGame::start() {
                 continue;
             }
             turnComplete = true;
-        }
-        if (!model.isGameOver()) {
-            bool turnComplete = false;
-            while (!turnComplete) {
-                try {
-                    std::string turns = secondPlayer->makeTurn(model);
-                    controller.handleTurn(turns);
-                }
-                catch (const VirusWarModelException &a) {
-                    continue;
-                }
-                catch (const std::invalid_argument &a) {
-                    continue;
-                }
-                turnComplete = true;
-            }
         }
     }
     delete firstPlayer;

@@ -10,7 +10,7 @@ class Human : public ::Player {
     std::string name;
     Status status;
 public:
-    Status getStatus() override;
+    virtual ~Human();
 
 public:
     Human(const std::string &name, Status status);

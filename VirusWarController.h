@@ -11,12 +11,17 @@ class VirusWarController {
 public:
     explicit VirusWarController(VirusWarModel &model);
 
-    void handleTurn(std::string &str);
+    void handleTurn();
+
+    void addPlayer(Player *player);
 
 private:
+    unsigned int currentPlayer = 0;
     VirusWarModel &model;
 
-    bool checkTurnFormat(std::vector<std::string>);
+    std::vector<Player *> players;
+
+    bool checkTurnFormat(std::vector<std::string> turns);
 };
 
 

@@ -8,12 +8,11 @@
 #include "VirusWarModel.h"
 
 class Player {
-protected:
-
 public:
     virtual std::string makeTurn(VirusWarModel &model) = 0;
 
-    virtual Status getStatus() = 0;
+
+    virtual ~Player() = default;
 };
 
 #endif //LAB3_PLAYER_H
