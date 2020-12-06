@@ -7,12 +7,7 @@ void VirusWarController::handleTurn() {
     std::string str = players[currentPlayer]->makeTurn(model);
     auto turns = VirusWarUtil::split(str, '-');
     if (checkTurnFormat(turns)) {
-        try {
-            model.makeTurns(turns);
-        }
-        catch (VirusWarModelException &a) {
-            throw a;
-        }
+        model.makeTurns(turns);
     } else {
         model.notifyAboutWrongTurn();
         throw std::invalid_argument("Wrong turn format");

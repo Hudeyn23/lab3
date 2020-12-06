@@ -7,8 +7,7 @@
 #include <sstream>
 #include "Cell.h"
 
-class VirusWarUtil {
-public:
+namespace VirusWarUtil {
     static Status getDeadStatusOfEnemy(const Status &status) {
         if (status == ZERO) {
             return DEAD_CROSS;
@@ -61,6 +60,7 @@ public:
         }
         return tokens;
     }
+
 };
 
 

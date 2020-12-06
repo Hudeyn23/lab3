@@ -90,7 +90,6 @@ void VirusWarModel::interactWithCell(int row, int column, Board &board) {
 }
 
 void VirusWarModel::makeTurns(const std::vector<std::string> &turn) {
-    Board boardBeforeTurns = virusWarBoard;
     if (isTurnCorrect(turn)) {
         if (crossFirstTurn && currentTurn == CROSS) {
             crossFirstTurn = false;
