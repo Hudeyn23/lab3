@@ -11,6 +11,7 @@ class Player {
 public:
     virtual std::string makeTurn(VirusWarModel &model) = 0;
 
+    virtual Status getStatus() = 0;
 
     virtual ~Player() = default;
 };

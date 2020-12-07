@@ -15,8 +15,7 @@ private:
     bool zeroFirstTurn = true;
     bool crossFirstTurn = true;
 public:
-
-    bool isWin();
+    Status getCurrentTurn();
 
     bool isGameOver();
 

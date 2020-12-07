@@ -1,4 +1,3 @@
-
 #include "Bot.h"
 
 std::string Bot::makeTurn(VirusWarModel &model) {
@@ -32,6 +31,11 @@ std::string Bot::makeTurn(VirusWarModel &model) {
 
 Bot::Bot(Status status) {
     this->status = status;
+}
+
+
+Status Bot::getStatus() {
+    return status;
 }
 
 Bot::~Bot() = default;

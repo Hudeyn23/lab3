@@ -13,6 +13,7 @@ public:
     virtual ~Human();
 
 public:
+    Status getStatus();
     Human(const std::string &name, Status status);
 
     std::string makeTurn(VirusWarModel &model) override;

@@ -2,9 +2,8 @@
 #include <iostream>
 #include "VirusWarModel.h"
 
-
-bool VirusWarModel::isWin() {
-    return false;
+Status VirusWarModel::getCurrentTurn() {
+    return currentTurn;
 }
 
 bool VirusWarModel::isTurnCorrect(const std::vector<std::string> &turn) {

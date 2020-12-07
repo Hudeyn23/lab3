@@ -7,7 +7,7 @@
 class Bot : public ::Player {
 public:
     Status status;
-
+    Status getStatus();
     Bot(Status status);
 
     std::string makeTurn(VirusWarModel &model) override;

@@ -6,7 +6,7 @@
 #include "VirusWarUtil.h"
 #include <string>
 #include "Player.h"
-
+#include <map>
 class VirusWarController {
 public:
     explicit VirusWarController(VirusWarModel &model);
@@ -16,12 +16,12 @@ public:
     void addPlayer(Player *player);
 
 private:
-    unsigned int currentPlayer = 0;
     VirusWarModel &model;
-
-    std::vector<Player *> players;
+    std::map<Status ,Player*> players;
 
     bool checkTurnFormat(std::vector<std::string> turns);
+
+    Player *currentPlayer();
 };
 
 

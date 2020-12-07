@@ -1,10 +1,24 @@
 #include "VirusWarController.h"
 
+Player *VirusWarController::currentPlayer() {
+    if (model.getCurrentTurn() == ZERO) {
+        if (players.find(ZERO) != players.end()) {
+            return players[ZERO];
+        }
+    }
+    if (model.getCurrentTurn() == CROSS) {
+        if (players.find(CROSS) != players.end()) {
+            return players[CROSS];
+        }
+    }
+    throw std::invalid_argument("don`t initialize player for this turn");
+}
+
 VirusWarController::VirusWarController(VirusWarModel &model) : model(model) {}
 
 
 void VirusWarController::handleTurn() {
-    std::string str = players[currentPlayer]->makeTurn(model);
+    std::string str = currentPlayer()->makeTurn(model);
     auto turns = VirusWarUtil::split(str, '-');
     if (checkTurnFormat(turns)) {
         model.makeTurns(turns);
@@ -12,7 +26,6 @@ void VirusWarController::handleTurn() {
         model.notifyAboutWrongTurn();
         throw std::invalid_argument("Wrong turn format");
     }
-    currentPlayer = (currentPlayer + 1) % players.size();
 }
 
 bool VirusWarController::checkTurnFormat(std::vector<std::string> turns) {
@@ -33,5 +46,5 @@ bool VirusWarController::checkTurnFormat(std::vector<std::string> turns) {
 }
 
 void VirusWarController::addPlayer(Player *player) {
-    players.push_back(player);
+    players[player->getStatus()] = player;
 }

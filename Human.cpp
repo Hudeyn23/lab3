@@ -13,6 +13,10 @@ Human::Human(const std::string &name, Status status) {
     this->status = status;
 }
 
+Status Human::getStatus() {
+    return status;
+}
+
 Human::~Human() = default;
 
 
